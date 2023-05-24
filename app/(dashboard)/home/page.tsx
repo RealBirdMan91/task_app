@@ -9,6 +9,7 @@ import ProjectCard from "@/components/ProjectCard";
 import Link from "next/link";
 import { User } from "@prisma/client";
 import TaskCard from "@/components/TaskCard";
+import NewProject from "@/components/NewProject";
 
 const getData = async () => {
   const { user } = (await getServerSession(authOptions)) as {
@@ -44,6 +45,9 @@ export default async function Page() {
               </Link>
             </div>
           ))}
+          <div className="w-1/3 p-3">
+            <NewProject />
+          </div>
         </div>
         <div className="mt-6 flex-2 grow w-full flex">
           <div className="w-full">

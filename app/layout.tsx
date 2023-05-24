@@ -14,11 +14,12 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const session = await getServerSession(authOptions);
-  console.log(session);
+  //console.log(session);
   return (
     <html lang="en">
       <body className="h-screen w-screen rainbow-mesh p-6">
         <Providers>{children}</Providers>
+        <div id="modal"></div>
       </body>
     </html>
   );
