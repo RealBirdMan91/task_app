@@ -1,5 +1,7 @@
 import "@/styles/globals.css";
 import Providers from "./providers";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 export const metadata = {
   title: "Create Next App",
@@ -11,6 +13,8 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getServerSession(authOptions);
+  console.log(session);
   return (
     <html lang="en">
       <body className="h-screen w-screen rainbow-mesh p-6">

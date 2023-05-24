@@ -1,5 +1,5 @@
-import { hashPassword } from "@/utils/auth";
-import { db } from "@/utils/db";
+import { hashPassword } from "@/lib/auth";
+import { db } from "@/lib/db";
 import { User } from "@prisma/client";
 
 import { NextRequest, NextResponse } from "next/server";

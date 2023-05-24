@@ -7,7 +7,7 @@ import Card from "./Card";
 import Button from "./Button";
 import Input from "./Input";
 import { signIn, useSession } from "next-auth/react";
-import { fetcher } from "@/utils/fetcher";
+import { fetcher } from "@/lib/fetcher";
 
 const registerContent = {
   linkUrl: "/signin",
@@ -34,8 +34,6 @@ interface Props {
 export default function AuthForm({ mode }: Props) {
   const [formState, setFormState] = useState({ ...initial });
   const [error, setError] = useState("");
-  const { data: session } = useSession();
-  console.log({ session });
   const router = useRouter();
 
   const handleSubmit = useCallback(
@@ -50,11 +48,14 @@ export default function AuthForm({ mode }: Props) {
             body: formState,
           });
         }
-        await signIn("credentials", {
+        const res = await signIn("credentials", {
           ...formState,
           redirect: false,
         });
-        router.replace("/home");
+
+        if (!res?.error) {
+          router.replace("/home");
+        }
       } catch (e) {
         setError(`Could not ${mode}`);
       } finally {

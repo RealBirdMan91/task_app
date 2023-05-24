@@ -3,7 +3,6 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import { db } from "./db";
 import type { AuthOptions } from "next-auth";
-import { signIn } from "next-auth/react";
 
 export async function hashPassword(password: string) {
   return await bcrypt.hash(password, 10);
@@ -53,22 +52,24 @@ export const authOptions: AuthOptions = {
       },
     }),
   ],
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60,
+  },
+  secret: process.env.SECRET,
   callbacks: {
     async jwt({ token, user }) {
-      if (!user) return token;
-      console.log("jwt", { user });
-      token.id = user.id;
+      if (user) {
+        token.id = user.id;
+        token.email = user.email;
+      }
       return token;
     },
     async session({ session, token }) {
-      // Send properties to the client, like an access_token and user id from a provider.
-      // session.accessToken = token.accessToken
-
       session.user.id = token.id as string;
       session.user.email = token.email;
       return session;
     },
   },
   debug: process.env.NODE_ENV === "development",
-  secret: process.env.NEXTAUTH_SECRET,
 };
